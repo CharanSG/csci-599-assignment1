@@ -110,7 +110,7 @@ class fc(object):
 		# You will probably need to reshape (flatten) the input features.           #
 		# Store the results in the variable output provided above.                  #
 		#############################################################################
-		x_flat = feat.reshape(feat.shape[0], -1)
+		x_flat = feat.reshape(-1, self.input_dim)
 		output = np.dot(x_flat, self.params[self.w_name]) + self.params[self.b_name]
 		#############################################################################
 		#                             END OF YOUR CODE                              #
@@ -130,7 +130,7 @@ class fc(object):
 		# Store the computed gradients for current layer in self.grads with         #
 		# corresponding name.                                                       # 
 		#############################################################################
-		x_flat = feat.reshape(feat.shape[0], -1)
+		x_flat = feat.reshape(-1, self.input_dim)
 		dx_flat = np.dot(dprev, self.params[self.w_name].T)
 		dfeat = dx_flat.reshape(feat.shape)
 		self.grads[self.w_name] = np.dot(x_flat.T, dprev)
