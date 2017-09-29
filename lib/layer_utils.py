@@ -130,7 +130,11 @@ class fc(object):
 		# Store the computed gradients for current layer in self.grads with         #
 		# corresponding name.                                                       # 
 		#############################################################################
-
+		x_flat = feat.reshape(feat.shape[0], -1)
+		dx_flat = np.dot(dprev, self.params[self.w_name].T)
+		dfeat = dx_flat.reshape(feat.shape)
+		self.grads[self.w_name] = np.dot(x_flat.T, dprev)
+		self.grads[self.b_name] = np.sum(dprev, axis=0)
 		#############################################################################
 		#                             END OF YOUR CODE                              #
 		#############################################################################
