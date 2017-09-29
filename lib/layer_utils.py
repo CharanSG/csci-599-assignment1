@@ -110,7 +110,8 @@ class fc(object):
 		# You will probably need to reshape (flatten) the input features.           #
 		# Store the results in the variable output provided above.                  #
 		#############################################################################
-
+		x_flat = feat.reshape(feat.shape[0], -1)
+		output = np.dot(x_flat, self.params[self.w_name]) + self.params[self.b_name]
 		#############################################################################
 		#                             END OF YOUR CODE                              #
 		#############################################################################
