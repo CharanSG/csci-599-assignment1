@@ -58,21 +58,22 @@ def compute_acc(model, data, labels, num_samples=None, batch_size=100):
 	N = data.shape[0]
 	if num_samples is not None and N > num_samples:
 		indices = np.random.choice(N, num_samples)
+		N = num_samples
 		data = data[indices]
 		labels = labels[indices]
 
-	num_batches = N / batch_size
+	num_batches = N // batch_size
 	if N % batch_size != 0:
 		num_batches += 1
 	preds = []
-	for i in xrange(num_batches):
+	for i in range(num_batches):
 		start = i * batch_size
 		end = (i + 1) * batch_size
-		output = model.forward(data, False)
+		output = model.forward(data[start:end], False)
 		scores = softmax(output)
 		pred = np.argmax(scores, axis=1)
 		preds.append(pred)
-	pred = np.hstack(preds)
+	preds = np.hstack(preds)
 	accuracy = np.mean(preds == labels)
 	return accuracy
 
