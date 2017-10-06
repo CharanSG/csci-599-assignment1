@@ -215,8 +215,9 @@ class dropout(object):
 		# TODO: Implement the forward pass of Dropout                               #
 		#############################################################################
 		if is_Training:
-			dropped = np.random.choice([0, 1], size=feat.shape, p=[self.p, 1 - self.p])
-			output = np.multiply(feat, dropped) / (1 - self.p)
+			eff_p = 1 if self.p == 0 else self.p
+			dropped = np.random.choice([0, 1], size=feat.shape, p=[1 - eff_p, eff_p])
+			output = np.multiply(feat, dropped) / (eff_p)
 		else:
 			output = feat
 		#############################################################################
@@ -236,7 +237,8 @@ class dropout(object):
 		# TODO: Implement the backward pass of Dropout                              #
 		#############################################################################
 		if self.is_Training:
-			dfeat = dprev / (1 - self.p) * self.dropped
+			eff_p = 1 if self.p == 0 else self.p
+			dfeat = dprev / (eff_p) * self.dropped
 		else:
 			dfeat = dprev
 		#############################################################################
