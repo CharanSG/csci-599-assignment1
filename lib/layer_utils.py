@@ -296,7 +296,7 @@ def softmax(feat):
 	# TODO: Implement the forward pass of a softmax function                    #
 	#############################################################################
 	scores = np.exp(feat)
-	scores = scores/ np.sum(scores, axis=0)
+	scores = scores / np.sum(scores, axis=0)
 	#############################################################################
 	#                             END OF YOUR CODE                              #
 	#############################################################################
