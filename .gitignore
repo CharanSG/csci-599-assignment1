@@ -11,3 +11,5 @@ MNIST_data
 lib/tf_models/problem2
 .ipynb_checkpoints
 *.DS_Store
+data/mnist*
+data/fashion_mnist*
