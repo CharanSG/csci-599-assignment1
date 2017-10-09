@@ -154,8 +154,11 @@ def train_net(data, model, loss_func, optimizer, batch_size, max_epochs,
 			# TODO: Update the parameters by a forward pass for the network, a backward #
 			# pass to the network, and make a step for the optimizer                    #
 			#############################################################################
-			loss = None
-
+			output = model.forward(data_train, True)
+			loss = loss_func.forward(output, labels_train)
+			dLoss = loss_func.backward()
+			dX = model.backward(dLoss)
+			grads = model.net.grads
 			#############################################################################
 			#                             END OF YOUR CODE                              #
 			#############################################################################
@@ -172,7 +175,8 @@ def train_net(data, model, loss_func, optimizer, batch_size, max_epochs,
 		# TODO: Compute the training accuracy and validation accuracy, store the    #
 		# results to train_acc_hist, and val_acc_hist respectively                  #
 		#############################################################################
-
+		train_acc = compute_acc(model, data_train, labels_train)
+		val_acc = compute_acc(model, data_val, labels_val)
 		#############################################################################
 		#                             END OF YOUR CODE                              #
 		#############################################################################
@@ -184,7 +188,13 @@ def train_net(data, model, loss_func, optimizer, batch_size, max_epochs,
 			#############################################################################
 			# TODO: Save the optimal parameters to opt_params variable by name          #
 			#############################################################################
-			pass
+			opt_val_acc = val_acc
+			opt_params = {}
+			for layer in model.layers:
+				if not hasattr(layer, "params"):
+					continue
+				for n, v in layer.params.iteritems():
+					opt_params[n] = layer.params[n].copy()
 			#############################################################################
 			#                             END OF YOUR CODE                              #
 			#############################################################################
