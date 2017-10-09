@@ -266,7 +266,12 @@ class cross_entropy(object):
 		#############################################################################
 		# TODO: Implement the forward pass of an CE Loss                            #
 		#############################################################################
-		
+		num_obs, num_class = scores.shape
+		one_hot = np.zeros(scores.shape)
+		one_hot[np.arange(num_obs), label] = 1
+		loss = -np.sum(np.multiply(one_hot, np.log(scores)))
+		if self.dim_average:
+			loss /= num_obs
 		#############################################################################
 		#                             END OF YOUR CODE                              #
 		#############################################################################
@@ -281,7 +286,12 @@ class cross_entropy(object):
 		#############################################################################
 		# TODO: Implement the backward pass of an CE Loss                           #
 		#############################################################################
-
+		num_obs, num_class = dLoss.shape
+		one_hot = np.zeros(dLoss.shape)
+		one_hot[np.arange(num_obs), self.label] = 1
+		dLoss = (dLoss - one_hot)
+		if self.dim_average:
+			dLoss /= num_obs
 		#############################################################################
 		#                             END OF YOUR CODE                              #
 		#############################################################################
@@ -296,7 +306,7 @@ def softmax(feat):
 	# TODO: Implement the forward pass of a softmax function                    #
 	#############################################################################
 	scores = np.exp(feat)
-	scores = scores / np.sum(scores, axis=0)
+	scores = scores / np.sum(scores, axis=1)[:, None]
 	#############################################################################
 	#                             END OF YOUR CODE                              #
 	#############################################################################
