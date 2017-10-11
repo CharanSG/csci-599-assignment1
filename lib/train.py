@@ -158,7 +158,7 @@ def train_net(data, model, loss_func, optimizer, batch_size, max_epochs,
 			loss = loss_func.forward(output, labels_train)
 			dLoss = loss_func.backward()
 			dX = model.backward(dLoss)
-			grads = model.net.grads
+			optimizer.step()
 			#############################################################################
 			#                             END OF YOUR CODE                              #
 			#############################################################################
@@ -190,7 +190,7 @@ def train_net(data, model, loss_func, optimizer, batch_size, max_epochs,
 			#############################################################################
 			opt_val_acc = val_acc
 			opt_params = {}
-			for layer in model.layers:
+			for layer in model.net.layers:
 				if not hasattr(layer, "params"):
 					continue
 				for n, v in layer.params.iteritems():
