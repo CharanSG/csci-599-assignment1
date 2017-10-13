@@ -42,7 +42,12 @@ class SGDM(Optimizer):
 		#############################################################################
 		# TODO: Implement the SGD + Momentum                                        #
 		#############################################################################
-		pass
+		for layer in self.net.layers:
+			for n, v in layer.params.iteritems():
+				dv = layer.grads[n]
+				vprev = self.velocity.get(n, np.zeros_like(layer.params[n]))
+				self.velocity[n] = self.momentum * vprev - self.lr * dv
+				layer.params[n] += self.velocity[n]
 		#############################################################################
 		#                             END OF YOUR CODE                              #
 		#############################################################################
