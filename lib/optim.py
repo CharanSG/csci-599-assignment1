@@ -90,7 +90,17 @@ class Adam(Optimizer):
 		#############################################################################
 		# TODO: Implement the Adam                                                  #
 		#############################################################################
-		pass
+		self.t += 1
+		for layer in self.net.layers:
+			for n, v in layer.params.iteritems():
+				dv = layer.grads[n]
+				mprev = self.mt.get(n, np.zeros_like(layer.params[n]))
+				vprev = self.vt.get(n, np.zeros_like(layer.params[n]))
+				self.mt[n] = self.beta1 * mprev + (1 - self.beta1) * dv
+				self.vt[n] = self.beta2 * vprev + (1 - self.beta2) * dv ** 2
+				mhat = self.mt[n] / (1 - self.beta1 ** self.t)
+				vhat = self.vt[n] / (1 - self.beta2 ** self.t)
+				layer.params[n] -= self.lr * mhat / (np.sqrt(vhat) + self.eps)
 		#############################################################################
 		#                             END OF YOUR CODE                              #
 		#############################################################################
