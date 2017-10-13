@@ -65,7 +65,12 @@ class RMSProp(Optimizer):
 		#############################################################################
 		# TODO: Implement the RMSProp                                               #
 		#############################################################################
-		pass
+		for layer in self.net.layers:
+			for n, v in layer.params.iteritems():
+				dv = layer.grads[n]
+				prev = self.cache.get(n, np.zeros_like(layer.params[n]))
+				self.cache[n] = self.decay * prev + (1 - self.decay) * dv ** 2
+				layer.params[n] -= self.lr * dv / np.sqrt(self.cache[n] + self.eps)
 		#############################################################################
 		#                             END OF YOUR CODE                              #
 		#############################################################################
